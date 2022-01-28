@@ -43,7 +43,7 @@ class Parser:
     def find_quote_in_raspes(self,group,raspes):
         quote=raspes[raspes.find(group):raspes.find(group)+raspes[raspes.find(group):].find('─')][:-1]
         if quote=='':
-            quote='На сегодняшний день расписание для вашей группы не найдено!(КАНИКУЛЫ!!!)....Ну или практика('
+            quote='На сегодняшний день расписание для вашей группы не найдено!(ВЫХОДНОЙ ИЛИ КАНИКУЛЫ!!!)....Ну или практика('
         else:
             quote = '   │'+quote
         return quote
@@ -83,11 +83,11 @@ def parse_and_update_db(HEADERS,GROUP_LIST,PARSE_URL,connection):
         parse = parser.parse_and_check()
         if parser.update_db(GROUP_LIST,parse)==False:
             NEW_RASPES=False
-            sleep(20)
+            sleep(60*20)
             continue
         parser.update_db(GROUP_LIST, parse)
         NEW_RASPES=True
-        sleep(20)
+        sleep(60*20)
 
 
 
