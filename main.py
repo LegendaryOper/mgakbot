@@ -13,7 +13,7 @@ try:
                                  user=user,
                                  password=password,
                                  database=db_name,
-                                 cursorclass=pymysql.cursors.DictCursor
+
                                  )
     print('succesful')
 
