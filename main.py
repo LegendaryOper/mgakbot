@@ -100,13 +100,18 @@ def mailing_raspes(mailflag):
 
 
 def admin_message(message):
-    if message.from_user.id in [761983343,460206879]:
+    admins_ids=[761983343,460206879]
+    if message.from_user.id in admins_ids:
         cursor1.execute('SELECT user_id FROM users;')
+        message_to_users=message.text[6:]
         data = cursor1.fetchall()
         for user_dict in data:
             try:
+                if user_dict['user_id']==message.from_user.id:
+                    bot.send_message(user_dict['user_id'], 'Рассылка отправлена')
+                    continue
                 bot.send_message(user_dict['user_id'], 'СООБЩЕНИЕ ОТ АДМИНА!!!')
-                bot.send_message(user_dict['user_id'],message.text)
+                bot.send_message(user_dict['user_id'],message_to_users)
             except Exception:
                 print('юзер с айди', user_dict['user_id'], 'забанил бота')
                 continue
