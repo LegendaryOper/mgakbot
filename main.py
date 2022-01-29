@@ -7,6 +7,7 @@ from config import *
 
 bot=telebot.TeleBot(token)
 
+
 try:
     connection = pymysql.connect(host=host,
                                  port=3306,
@@ -15,35 +16,20 @@ try:
                                  database=db_name,
                                  cursorclass=pymysql.cursors.DictCursor
                                  )
-    print('succesful')
-
-    try:
-        with connection.cursor() as cursor1:
-
-            create_table_users = 'CREATE TABLE users(user_id int,group_number int);'
-            create_table_raspes = 'CREATE TABLE raspes(group_number int, raspisaniye varchar(500),group_name varchar(50));'
-            create_table_current_raspes = 'CREATE TABLE current_raspes(id int, curent varchar(10000));'
-            create_current_raspes_row = 'INSERT INTO current_raspes (id, curent) VALUES(1,"Привет");'
-            # cursor1.execute('drop table current_raspes')
-            # cursor1.execute(create_table_users)
-            # print('users')
-            # cursor1.execute(create_table_raspes)
-            # print('raspes')
-            # cursor1.execute(create_table_current_raspes)
-            # print('current_rapses')
-            # cursor1.execute(create_current_raspes_row)
-            # print('row')
-
-    except Exception as ex1:
-        print(ex1)
-        print('bebra')
 
 
+    db_setting1 = 'SET net_read_timeout = 180000;'
+    db_setting2 = 'SET net_write_timeout = 180000;'
+
+    connection.cursor().execute(db_setting1)
+    connection.cursor().execute(db_setting2)
+    print('setting succesful')
 
 except Exception as ex:
     print("Error")
     print(ex)
-cursor1 = connection.cursor()
+
+cursor1=connection.cursor()
 
 
 
@@ -598,6 +584,7 @@ def polling():
         bot.polling(none_stop=False,interval=1)
 
 
+
 print('привет')
 
 
@@ -607,11 +594,32 @@ parsing_thread.start()
 polling_thread.start()
 
 while True:
+    try:
+        connection = pymysql.connect(host=host,
+                                     port=3306,
+                                     user=user,
+                                     password=password,
+                                     database=db_name,
+                                     cursorclass=pymysql.cursors.DictCursor
+                                     )
+
+        db_setting1 = 'SET net_read_timeout = 180000;'
+        db_setting2 = 'SET net_write_timeout = 180000;'
+
+        connection.cursor().execute(db_setting1)
+        connection.cursor().execute(db_setting2)
+        print('setting succesful')
+
+    except Exception as ex:
+        print("Error")
+        print(ex)
+
+    cursor1 = connection.cursor()
     if parse.NEW_RASPES:
         mailing_raspes('raspes')
-        sleep(60*20)
+        sleep(50)
     else:
-        sleep(60*20)
+        sleep(50)
 
 
 

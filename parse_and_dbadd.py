@@ -2,12 +2,15 @@ import requests
 from bs4 import BeautifulSoup
 from urllib import parse
 from time import sleep
+import pymysql
+from config import *
 
 
 
 
 
 NEW_RASPES=False
+
 
 class Parser:
 
@@ -16,7 +19,7 @@ class Parser:
         self.GROUP_LIST = GROUP_LIST
         self.PARSE_URL = PARSE_URL
         self.connection = connection
-        self.cursor = connection.cursor()
+        self.cursor = self.connection.cursor()
 
     def parse_and_check(self):
         cursor = self.cursor
@@ -83,12 +86,11 @@ def parse_and_update_db(HEADERS,GROUP_LIST,PARSE_URL,connection):
         parse = parser.parse_and_check()
         if parser.update_db(GROUP_LIST,parse)==False:
             NEW_RASPES=False
-            sleep(60*20)
+            sleep(20)
             continue
         parser.update_db(GROUP_LIST, parse)
         NEW_RASPES=True
-        sleep(60*20)
-
+        sleep(20)
 
 
 
