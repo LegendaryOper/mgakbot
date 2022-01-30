@@ -88,11 +88,11 @@ def parse_and_update_db(HEADERS,GROUP_LIST,PARSE_URL,connection):
         parse = parser.parse_and_check()
         if parser.update_db(GROUP_LIST,parse)==False:
             NEW_RASPES=False
-            sleep(20)
+            sleep(50)
             continue
         parser.update_db(GROUP_LIST, parse)
         NEW_RASPES=True
-        sleep(20)
+        sleep(50)
 
 
 

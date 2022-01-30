@@ -72,17 +72,17 @@ def db_table_val(user_id: int, group_number: int):
         cursor1.execute('UPDATE users SET group_number =%s WHERE user_id=%s',(group_number,user_id))
         connection.commit()
 
-def mailing_raspes(mailflag):
-    if mailflag=='raspes':
-        cursor1.execute('SELECT user_id FROM users;')
-        data = cursor1.fetchall()
-        for user_dict in data:
-            try:
-                bot.send_message(user_dict['user_id'], 'НОВОЕ РАСПИСАНИЕ!!!!')
-                bot.send_message(user_dict['user_id'], message_from_db(user_dict['user_id']))
-            except Exception:
-                print('юзер с айди', user_dict['user_id'], 'забанил бота')
-                continue
+def mailing_raspes():
+
+    cursor1.execute('SELECT user_id FROM users;')
+    data = cursor1.fetchall()
+    for user_dict in data:
+        try:
+            bot.send_message(user_dict['user_id'], 'НОВОЕ РАСПИСАНИЕ!!!!')
+            bot.send_message(user_dict['user_id'], message_from_db(user_dict['user_id']))
+        except Exception:
+            print('юзер с айди', user_dict['user_id'], 'забанил бота')
+            continue
 
 
 def admin_message(message):
@@ -615,11 +615,12 @@ while True:
         print(ex)
 
     cursor1 = connection.cursor()
+    sleep(5)
     if parse.NEW_RASPES:
-        mailing_raspes('raspes')
-        sleep(50)
+        mailing_raspes()
+        sleep(45)
     else:
-        sleep(50)
+        sleep(45)
 
 
 
