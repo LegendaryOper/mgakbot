@@ -2,8 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib import parse
 from time import sleep
-import pymysql
-from config import *
+from datetime import datetime
 
 
 
@@ -27,7 +26,10 @@ class Parser:
         response = requests.get(self.PARSE_URL, headers=self.HEADERS)
         soup = BeautifulSoup(response.text, 'lxml')
         quotes = soup.find_all('a', class_='sm1')
-        url = 'https://mgak1.by/' + str(quotes[3])[21:-14]
+        if str(quotes[3])[21:-14] == 'assets/site/raspisanie/1.htm' and datetime.today().isoweekday() == 7:
+            url = 'https://mgak1.by/' + str(quotes[4])[21:-14]
+        else:
+            url = 'https://mgak1.by/' + str(quotes[3])[21:-14]
         url = parse.quote(f'{url}', safe='')
         url = 'https://www.w3.org/services/html2txt?url=' + url
         response = requests.get(url, headers=self.HEADERS)
