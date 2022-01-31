@@ -618,9 +618,9 @@ while True:
     sleep(5)
     if parse.NEW_RASPES:
         mailing_raspes()
-        sleep(45)
+        sleep(40)
     else:
-        sleep(45)
+        sleep(40)
 
 
 
