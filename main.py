@@ -581,7 +581,10 @@ def get_text_messages(message):
 
 def polling():
     while True:
-        bot.polling(none_stop=False,interval=1)
+        try:
+            bot.polling(none_stop=False,interval=1)
+        except Exception:
+            print('ошибка с поллингом')
 
 
 
