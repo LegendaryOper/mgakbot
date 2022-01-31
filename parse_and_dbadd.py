@@ -26,7 +26,7 @@ class Parser:
         response = requests.get(self.PARSE_URL, headers=self.HEADERS)
         soup = BeautifulSoup(response.text, 'lxml')
         quotes = soup.find_all('a', class_='sm1')
-        if str(quotes[3])[21:-14] == 'assets/site/raspisanie/1.htm' and datetime.today().isoweekday() == 7:
+        if str(quotes[3])[21:-14] == 'assets/site/raspisanie/1.htm' and datetime.today().isoweekday() in [7,1]:
             url = 'https://mgak1.by/' + str(quotes[4])[21:-14]
         else:
             url = 'https://mgak1.by/' + str(quotes[3])[21:-14]
