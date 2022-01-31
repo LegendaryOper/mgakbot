@@ -23,7 +23,7 @@ try:
 
     connection.cursor().execute(db_setting1)
     connection.cursor().execute(db_setting2)
-    print('setting succesful')
+
 
 except Exception as ex:
     print("Error")
@@ -608,7 +608,7 @@ while True:
 
         connection.cursor().execute(db_setting1)
         connection.cursor().execute(db_setting2)
-        print('setting succesful')
+
 
     except Exception as ex:
         print("Error")
