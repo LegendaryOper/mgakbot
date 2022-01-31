@@ -95,7 +95,9 @@ def parse_and_update_db(HEADERS,GROUP_LIST,PARSE_URL,connection):
             parser.update_db(GROUP_LIST, parse)
             NEW_RASPES=True
             sleep(50)
-        except Exception:
+        except Exception as ex:
+            print('ошибка в парсинге')
+            print(ex)
             continue
 
 
