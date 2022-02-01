@@ -98,6 +98,7 @@ def parse_and_update_db(HEADERS,GROUP_LIST,PARSE_URL,connection):
         except Exception as ex:
             print('ошибка в парсинге')
             print(ex)
+            sleep(45)
             continue
 
 
