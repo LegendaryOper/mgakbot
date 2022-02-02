@@ -598,8 +598,9 @@ def polling():
     while True:
         try:
             bot.polling(none_stop=False,interval=1)
-        except Exception:
+        except Exception as ex:
             print('ошибка с поллингом')
+            print(ex)
 
 
 
