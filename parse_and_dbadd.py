@@ -21,7 +21,7 @@ class Parser:
         self.cursor = self.connection.cursor()
 
     def parse_and_check(self):
-        cursor = self.cursor
+        cursor = self.connection.cursor()
         connection = self.connection
         response = requests.get(self.PARSE_URL, headers=self.HEADERS)
         soup = BeautifulSoup(response.text, 'lxml')
@@ -38,11 +38,12 @@ class Parser:
         cursor.execute("SELECT curent FROM current_raspes")
         data = cursor.fetchall()
         if data[0]['curent']==raspes:
+            cursor.close()
             return False
         else:
             cursor.execute('UPDATE current_raspes SET curent=%s where id=1;', [raspes])
             connection.commit()
-
+            cursor.close()
             return raspes
 
     def find_quote_in_raspes(self,group,raspes):
@@ -54,8 +55,8 @@ class Parser:
         return quote
 
     def update_db(self,group_list,raspes):
-        cursor = self.cursor
         connection = self.connection
+        cursor = self.connection.cursor()
         if raspes==False:
             return False
 
@@ -76,6 +77,7 @@ class Parser:
                 cursor.execute('INSERT INTO raspes (group_number,raspisaniye,group_name) VALUES (%s, %s, %s)', (i,
                 self.find_quote_in_raspes(group_list[i-1],raspes),group_list[i-1]))
                 connection.commit()
+        cursor.close()
 
 
 
@@ -98,7 +100,7 @@ def parse_and_update_db(HEADERS,GROUP_LIST,PARSE_URL,connection):
         except Exception as ex:
             print('ошибка в парсинге')
             print(ex)
-            sleep(45)
+            sleep(50)
             continue
 
 

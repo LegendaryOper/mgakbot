@@ -38,21 +38,28 @@ def check_userid_in_database(id):
     cursor1.execute("SELECT user_id FROM users WHERE user_id=%s", (id,))
     data = cursor1.fetchall()
     if len(data) == 0:
+        cursor1.close()
         return True
     else:
+        cursor1.close()
         return False
 
 
 def check_group_id_in_database(id):
+    cursor1 = connection.cursor()
     cursor1.execute("SELECT group_number FROM users WHERE user_id =%s", (id,))
     data = cursor1.fetchall()
     if len(data) == 0:
+        cursor1.close()
         return False
     else:
+        cursor1.close()
         return True
 
 
 def message_from_db(id):
+
+    cursor1 = connection.cursor()
 
     def select_group_id(id):
         cursor1.execute("SELECT group_number FROM users WHERE user_id =%s", (id,))
@@ -61,18 +68,23 @@ def message_from_db(id):
 
     cursor1.execute("SELECT raspisaniye FROM raspes WHERE group_number =%s", (select_group_id(id),))
     data = cursor1.fetchall()[0]['raspisaniye']
+    cursor1.close()
     return data
 
 
 def db_table_val(user_id: int, group_number: int):
+    cursor1 = connection.cursor()
     if check_userid_in_database(user_id):
         cursor1.execute('INSERT INTO users (user_id, group_number) VALUES (%s, %s)', (user_id, group_number))
         connection.commit()
     else:
         cursor1.execute('UPDATE users SET group_number =%s WHERE user_id=%s',(group_number,user_id))
         connection.commit()
+    cursor1.close()
+
 
 def mailing_raspes():
+    cursor1 = connection.cursor()
 
     cursor1.execute('SELECT user_id FROM users;')
     data = cursor1.fetchall()
@@ -83,9 +95,11 @@ def mailing_raspes():
         except Exception:
             print('юзер с айди', user_dict['user_id'], 'забанил бота')
             continue
+    cursor1.close()
 
 
 def admin_message(message):
+    cursor1 = connection.cursor()
     admins_ids=[761983343,460206879]
     if message.from_user.id in admins_ids:
         cursor1.execute('SELECT user_id FROM users;')
@@ -101,6 +115,7 @@ def admin_message(message):
             except Exception:
                 print('юзер с айди', user_dict['user_id'], 'забанил бота')
                 continue
+    cursor1.close()
 
 
 START_MESSAGE='Привет, я легенда МГАКА. Тупа ботяра созданная легендами для легенд. В общем, я занимаюсь рассылкой распи'\
@@ -621,9 +636,9 @@ while True:
     sleep(5)
     if parse.NEW_RASPES:
         mailing_raspes()
-        sleep(40)
+        sleep(45)
     else:
-        sleep(40)
+        sleep(45)
 
 
 
