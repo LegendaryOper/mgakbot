@@ -35,6 +35,7 @@ cursor1=connection.cursor()
 
 
 def check_userid_in_database(id):
+    cursor1=connection.cursor()
     cursor1.execute("SELECT user_id FROM users WHERE user_id=%s", (id,))
     data = cursor1.fetchall()
     if len(data) == 0:
