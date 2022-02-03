@@ -23,13 +23,13 @@ try:
 
     connection.cursor().execute(db_setting1)
     connection.cursor().execute(db_setting2)
+    connection.cursor().close()
 
 
 except Exception as ex:
     print("Error")
     print(ex)
 
-cursor1=connection.cursor()
 
 
 
@@ -615,6 +615,7 @@ polling_thread.start()
 
 while True:
     try:
+        connection.close()
         connection = pymysql.connect(host=host,
                                      port=3306,
                                      user=user,
@@ -628,13 +629,14 @@ while True:
 
         connection.cursor().execute(db_setting1)
         connection.cursor().execute(db_setting2)
+        connection.cursor().close()
 
 
     except Exception as ex:
         print("Error")
         print(ex)
 
-    cursor1 = connection.cursor()
+
     sleep(5)
     if parse.NEW_RASPES:
         mailing_raspes()

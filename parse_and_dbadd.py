@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 from urllib import parse
 from time import sleep
 from datetime import datetime
+import pymysql
+from config import *
 
 
 
@@ -87,6 +89,20 @@ def parse_and_update_db(HEADERS,GROUP_LIST,PARSE_URL,connection):
     while True:
 
         try:
+            connection = pymysql.connect(host=host,
+                                         port=3306,
+                                         user=user,
+                                         password=password,
+                                         database=db_name,
+                                         cursorclass=pymysql.cursors.DictCursor
+                                         )
+
+            db_setting1 = 'SET net_read_timeout = 180000;'
+            db_setting2 = 'SET net_write_timeout = 180000;'
+
+            connection.cursor().execute(db_setting1)
+            connection.cursor().execute(db_setting2)
+            connection.cursor().close()
             global NEW_RASPES
             parser = Parser(HEADERS, GROUP_LIST, PARSE_URL,connection)
             parse = parser.parse_and_check()
